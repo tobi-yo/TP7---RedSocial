@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Bienvenido";
+}
+
+<section class="welcome-container">
+    <h1>¡Bienvenido @Context.Session.GetString("Nombre")!</h1>
+    
+    <div class="profile-info">
+        <div class="profile-info-item">
+            <span class="profile-label">ID:</span>
+            <span class="profile-value">@Context.Session.GetString("ID")</span>
+        </div>
+        <div class="profile-info-item">
+            <span class="profile-label">Nombre de usuario:</span>
+            <span class="profile-value">@Context.Session.GetString("NombreUsuario")</span>
+        </div>
+        <div class="profile-info-item">
+            <span class="profile-label">Nombre:</span>
+            <span class="profile-value">@Context.Session.GetString("Nombre")</span>
+        </div>
+        <div class="profile-info-item">
+            <span class="profile-label">Apellido:</span>
+            <span class="profile-value">@Context.Session.GetString("Apellido")</span>
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button type="button" onclick="location.href='@Url.Action("CerrarSesion", "Home")'">Cerrar sesión</button>
+        <button type="button" class="button-secondary" onclick="location.href='@Url.Action("Index", "Home")'">Volver</button>
+    </div>
+</section>

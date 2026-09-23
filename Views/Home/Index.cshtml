@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Home pública</h1>
+    <p>Esta es la página pública.</p>
+    @if(@Context.Session.GetString("ID") == null){
+        <button type="button" onclick="location.href='@Url.Action("IniciarSesion", "Home")'">Iniciar sesión</button>
+        <button type="button" onclick="location.href='@Url.Action("Registrarse", "Home")'">Registrarse</button>
+    } else{
+        <button type="button" onclick="location.href='@Url.Action("Bienvenida", "Home")'">Tu perfil</button>
+    }
+    
+</div>

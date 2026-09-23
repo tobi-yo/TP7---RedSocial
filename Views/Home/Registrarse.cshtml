@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Registrarse";
+}   
+
+<section class="auth-container">
+<h1>Registrarse</h1>
+    <form action='@Url.Action("CrearCuenta", "Home")' method="post" onsubmit="return validarRegistro();">
+        <div class="auth-form-group">
+            <label class="auth-label">NombreUsuario</label>
+            <input id="nombreUsuario" type="text" name="NombreUsuario" class="auth-input">
+        </div>
+
+        <div class="auth-form-group">
+            <label class="auth-label">Contraseña</label>
+            <input id="contrasena" type="password" name="Contraseña" class="auth-input"/>
+        </div>
+
+        <div class="auth-form-group">
+            <label class="auth-label">Nombre</label>
+            <input id="nombre" type="text" name="Nombre" class="auth-input"/>
+        </div>
+
+        <div class="auth-form-group">
+            <label class="auth-label">Apellido</label>
+            <input id="apellido" type="text" name="Apellido" class="auth-input"/>
+        </div>
+
+        <p id="mensaje" class="auth-message">@ViewBag.Mensaje</p>
+        
+        <!-- Cloudflare Turnstile widget - site key proporcionada por el usuario -->
+        <div class="auth-form-group">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAET63HM5pdMTLMTA"></div>
+        </div>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+        <button type="submit">Guardar</button>
+        <button type="button" class="button-secondary" onclick="location.href='@Url.Action("Index", "Home")'">volver</button>
+    </form>
+</section>

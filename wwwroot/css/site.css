@@ -1,0 +1,489 @@
+/* ==================== Variables CSS - Sistema de Diseño ==================== */
+:root {
+  --primary-gradient: linear-gradient(180deg, #2f80ed 0%, #2563eb 100%);
+  --primary-color: #2563eb;
+  --primary-lighter: #3b82f6;
+  --bg-gradient: linear-gradient(180deg, #f6f8fc 0%, #eef3f9 100%);
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #cbd5e1;
+  --border-light: rgba(255, 255, 255, 0.7);
+  --error-color: #9c1e1e;
+  --shadow-sm: 0 2px 8px rgba(37, 99, 235, 0.08);
+  --shadow-md: 0 8px 18px rgba(37, 99, 235, 0.18);
+  --shadow-lg: 0 18px 40px rgba(15, 23, 42, 0.08);
+  --shadow-focus: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+  --transition-standard: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+}
+
+/* ==================== Reset y Base ==================== */
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: var(--transition-standard);
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* ==================== Bootstrap Overrides ==================== */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--primary-color);
+}
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+  color: var(--text-secondary);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* ==================== Botones Globales ==================== */
+button:not(.navbar-toggler) {
+  appearance: none;
+  background: var(--primary-gradient);
+  color: #ffffff;
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 0.65rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+button:not(.navbar-toggler)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: left 0.3s ease;
+}
+
+button:not(.navbar-toggler):hover::before {
+  left: 100%;
+}
+
+button:not(.navbar-toggler):hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+}
+
+button:not(.navbar-toggler):active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+  filter: brightness(1.02);
+}
+
+/* ==================== Header/Navbar ==================== */
+header {
+  animation: slideDown 0.4s ease;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar {
+  padding: var(--spacing-md) 0 !important;
+  transition: var(--transition-standard);
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.navbar button{
+  margin-left: var(--spacing-md);
+  margin-right: var(--spacing-md);
+}
+
+.navbar-nav {
+  gap: var(--spacing-md);
+}
+
+.navbar-nav .nav-item button,
+.navbar .d-flex button {
+  padding: 0.55rem 0.95rem;
+  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
+}
+
+.navbar .d-flex {
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.navbar-text {
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+/* ==================== Contenedor de Autenticación ==================== */
+.auth-container {
+  max-width: 520px;
+  margin: var(--spacing-2xl) auto;
+  padding: var(--spacing-xl);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(8px);
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-container h1 {
+  margin-bottom: var(--spacing-lg);
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+/* ==================== Formularios en Autenticación ==================== */
+.auth-form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.auth-label {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: var(--transition-standard);
+}
+
+.auth-form-group:focus-within .auth-label {
+  color: var(--primary-color);
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  outline: none;
+  font-size: 1rem;
+  transition: var(--transition-standard);
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-input:hover {
+  border-color: var(--primary-lighter);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+.auth-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-focus);
+}
+
+.auth-radio {
+  margin-right: var(--spacing-sm);
+  accent-color: var(--primary-color);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.auth-radio:hover {
+  accent-color: var(--primary-lighter);
+}
+
+/* ==================== Mensajes en Autenticación ==================== */
+.auth-message {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+  color: var(--error-color);
+  font-weight: 500;
+  min-height: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ==================== Botones en Formularios ==================== */
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container button[type="submit"],
+.auth-container button[type="button"]:not(.button-secondary) {
+  width: 100%;
+  margin-top: var(--spacing-md);
+  padding: 0.75rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.button-secondary {
+  display: block;
+  margin: var(--spacing-lg) auto 0;
+  width: fit-content !important;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  transition: var(--transition-fast);
+}
+
+.button-secondary:hover {
+  opacity: 1;
+}
+
+/* ==================== Contenedor Principal ==================== */
+.text-center {
+  animation: fadeInUp 0.5s ease;
+}
+
+.display-4 {
+  color: var(--text-primary);
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+  transition: var(--transition-standard);
+}
+
+.text-center p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
+}
+
+/* ==================== Botones en Home ==================== */
+.text-center button {
+  margin: var(--spacing-sm);
+  min-width: 150px;
+  transition: var(--transition-standard);
+}
+
+.text-center button:hover {
+  transform: translateY(-2px);
+}
+
+/* ==================== Contenedor de Bienvenida/Perfil ==================== */
+.welcome-container {
+  max-width: 600px;
+  margin: var(--spacing-2xl) auto;
+  padding: var(--spacing-xl);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(8px);
+  animation: fadeInUp 0.5s ease;
+}
+
+.welcome-container h1 {
+  margin-bottom: var(--spacing-xl);
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-primary);
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ==================== Información de Perfil ==================== */
+.profile-info {
+  margin-bottom: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.profile-info-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: rgba(37, 99, 235, 0.03);
+  border-left: 4px solid var(--primary-color);
+  border-radius: var(--radius-md);
+  transition: var(--transition-standard);
+}
+
+.profile-info-item:hover {
+  background: rgba(37, 99, 235, 0.08);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-label {
+  font-weight: 600;
+  color: var(--primary-color);
+  min-width: 150px;
+  font-size: 0.95rem;
+}
+
+.profile-value {
+  color: var(--text-primary);
+  font-weight: 500;
+  flex: 1;
+  word-break: break-word;
+}
+
+/* ==================== Grupo de Botones ==================== */
+.button-group {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.button-group button {
+  flex: 1;
+  min-width: 150px;
+  padding: 0.75rem 1.2rem;
+  font-size: 0.95rem;
+  transition: var(--transition-standard);
+}
+
+.button-group button:first-child {
+  flex: 2;
+}
+
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .button-group button:first-child {
+    flex: unset;
+  }
+
+  .profile-label {
+    min-width: 120px;
+    font-size: 0.9rem;
+  }
+
+  .profile-info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--spacing-md);
+  }
+
+  .profile-value {
+    margin-top: var(--spacing-sm);
+    font-size: 0.95rem;
+  }
+}
+
+/* ==================== Responsive General ==================== */
+@media (max-width: 768px) {
+  .auth-container {
+    margin: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
+
+  .auth-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .welcome-container {
+    margin: var(--spacing-xl) var(--spacing-md);
+    padding: var(--spacing-lg);
+  }
+
+  .welcome-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .navbar .d-flex {
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .navbar-text {
+    font-size: 0.9rem;
+  }
+
+  .text-center button {
+    display: block;
+    width: 100%;
+    margin: var(--spacing-md) 0;
+  }
+}
+
+.regist{
+  margin: 1%;
+  margin-top: 5%;
+  padding: 1%;
+  border: 1px, solid, #1f293733;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+}
+.regist h1{
+  font-size: 170%;
+  margin: 0%;
+}
