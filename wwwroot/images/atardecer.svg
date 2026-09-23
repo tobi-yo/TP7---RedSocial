@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="150" fill="#ff6b5b"/>
+  <rect y="150" width="400" height="150" fill="#2c3e50"/>
+  <circle cx="200" cy="100" r="50" fill="#ffd700"/>
+  <polygon points="0,150 100,80 200,150" fill="#1a1a1a" opacity="0.6"/>
+  <polygon points="200,150 300,70 400,150" fill="#1a1a1a" opacity="0.5"/>
+  <text x="200" y="280" font-size="16" text-anchor="middle" fill="#fff" font-weight="bold">Atardecer</text>
+</svg>

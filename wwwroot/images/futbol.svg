@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#2d5016"/>
+  <circle cx="200" cy="150" r="15" fill="#000"/>
+  <circle cx="150" cy="120" r="8" fill="#fff"/>
+  <circle cx="250" cy="180" r="8" fill="#fff"/>
+  <circle cx="200" cy="220" r="8" fill="#fff"/>
+  <text x="200" y="280" font-size="16" text-anchor="middle" fill="#fff" font-weight="bold">Fútbol</text>
+</svg>

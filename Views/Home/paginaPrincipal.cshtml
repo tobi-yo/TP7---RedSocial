@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Pagina Principal";
+}
+
+<link rel="stylesheet" href="~/css/pagina-principal.css" asp-append-version="true" />
+
+<div class="pagina-principal">
+    <div class="header-publicar">
+        <h1>Para ti</h1>
+        <button class="btn-crear-publicacion" onclick="crearPublicacion()">+ Publicar</button>
+    </div>
+
+    <div class="publicaciones-container" id="publicacionesContainer">
+        <!-- Las publicaciones se cargarán aquí -->
+    </div>
+
+    <div class="btn-ver-mas-container" id="verMasContainer" style="display: none;">
+        <button class="btn-ver-mas" id="btnVerMas" onclick="cargarMasPublicaciones()">Ver más</button>
+    </div>
+</div>
+
+<script src="~/js/publicaciones.js" asp-append-version="true"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarPublicacionesIniciales();
+    });
+</script>

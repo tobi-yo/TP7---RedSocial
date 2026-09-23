@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#0a0a0a"/>
+  <polygon points="200,50 150,150 250,150" fill="#FFD700"/>
+  <circle cx="100" cy="200" r="20" fill="#ff6b6b"/>
+  <circle cx="200" cy="180" r="20" fill="#4ecdc4"/>
+  <circle cx="300" cy="200" r="20" fill="#95e1d3"/>
+  <text x="200" y="280" font-size="16" text-anchor="middle" fill="#fff" font-weight="bold">Recital</text>
+</svg>

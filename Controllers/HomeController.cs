@@ -16,6 +16,10 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        if (HttpContext.Session.GetString("ID") != null)
+        {
+            return RedirectToAction("paginaPrincipal");
+        }
         return View();
     }
 
@@ -70,6 +74,72 @@ public class HomeController : Controller
     public IActionResult Bienvenida()
     {
         return View();
+    }
+
+    public IActionResult paginaPrincipal()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    public List<Publicacion> ObtenerPublicaciones(int desde = 0, int cantidad = 10)
+    {
+        BD bd = new BD();
+        List<Publicacion> publicaciones = bd.ObtenerPublicaciones(desde, cantidad);
+        
+        if (publicaciones.Count > 0)
+        {
+            int idUsuarioActual = int.Parse(HttpContext.Session.GetString("ID") ?? "0");
+            foreach (var pub in publicaciones)
+            {
+                pub.MeGustaDelUsuario = bd.VerificarMeGusta(pub.Id, idUsuarioActual);
+            }
+        }
+        
+        return publicaciones;
+    }
+
+    [HttpGet]
+    public List<Comentario> ObtenerComentarios(int idPublicacion)
+    {
+        BD bd = new BD();
+        return bd.ObtenerComentarios(idPublicacion);
+    }
+
+    [HttpPost]
+    public Comentario? AgregarComentario(int idPublicacion, string texto)
+    {
+        string? idUsuarioSession = HttpContext.Session.GetString("ID");
+        if (string.IsNullOrEmpty(idUsuarioSession))
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(texto))
+        {
+            return null;
+        }
+
+        int idUsuario = int.Parse(idUsuarioSession);
+        BD bd = new BD();
+        
+        return bd.CrearComentario(idPublicacion, idUsuario, texto);
+    }
+
+    [HttpPost]
+    public int TogglearMeGusta(int idPublicacion)
+    {
+        string? idUsuarioSession = HttpContext.Session.GetString("ID");
+        if (string.IsNullOrEmpty(idUsuarioSession))
+        {
+            return -1;
+        }
+
+        int idUsuario = int.Parse(idUsuarioSession);
+        BD bd = new BD();
+        
+        bd.TogglearMeGusta(idPublicacion, idUsuario);
+        return bd.ObtenerCantidadMeGusta(idPublicacion);
     }
 
     public IActionResult Privacy()

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#87CEEB"/>
+  <polygon points="100,150 50,250 150,250" fill="#8B7355"/>
+  <polygon points="250,100 200,200 300,200" fill="#6B5344"/>
+  <circle cx="350" cy="60" r="30" fill="#FFD700"/>
+  <text x="200" y="280" font-size="16" text-anchor="middle" fill="#333" font-weight="bold">Bariloche</text>
+</svg>
