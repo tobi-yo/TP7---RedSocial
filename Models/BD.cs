@@ -37,14 +37,46 @@ public class BD
         }
     }
 
+    public List<HistoriaUsuario> ObtenerHistorias(int cantidad = 7)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            string query = @"
+                SELECT TOP (@Cantidad)
+                    Id,
+                    NombreUsuario,
+                    Nombre,
+                    Apellido,
+                    LEFT(UPPER(ISNULL(Nombre, '') + ' ' + ISNULL(Apellido, '')), 2) AS Iniciales
+                FROM Usuarios
+                ORDER BY Id DESC";
+
+            return connection.Query<HistoriaUsuario>(query, new { Cantidad = cantidad }).ToList();
+        }
+    }
+
+    public int CrearPublicacion(Publicacion publicacion)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            string query = @"
+                INSERT INTO Publicaciones (IdUsuario, Titulo, Descripcion, Imagen, FechaPublicacion)
+                VALUES (@IdUsuario, @Titulo, @Descripcion, @Imagen, @FechaPublicacion);
+                SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+            return connection.QuerySingle<int>(query, publicacion);
+        }
+    }
+
     public List<Publicacion> ObtenerPublicaciones(int skip = 0, int take = 10)
     {
         using (var connection = new SqlConnection(connectionString))
         {
             string query = @"
-                SELECT p.Id, p.IdUsuario, p.Titulo, p.Descripcion, p.Imagen, p.FechaPublicacion,
+                  SELECT p.Id, p.IdUsuario, p.Titulo, p.Descripcion, p.Imagen, p.FechaPublicacion,
                        u.NombreUsuario, u.Nombre + ' ' + u.Apellido as NombreCompleto,
-                       (SELECT COUNT(*) FROM PublicacionesMeGusta WHERE IdPublicación = p.Id) as CantidadMeGusta
+                      (SELECT COUNT(*) FROM PublicacionesMeGusta WHERE IdPublicación = p.Id) as CantidadMeGusta,
+                      (SELECT COUNT(*) FROM Comentarios WHERE IdPublicacion = p.Id) as CantidadComentarios
                 FROM Publicaciones p
                 INNER JOIN Usuarios u ON p.IdUsuario = u.Id
                 ORDER BY p.FechaPublicacion DESC
@@ -77,6 +109,16 @@ public class BD
         {
             string query = "SELECT COUNT(*) FROM PublicacionesMeGusta WHERE IdPublicación = @IdPublicacion AND IdUsuario = @IdUsuario";
             int resultado = connection.QueryFirstOrDefault<int>(query, new { IdPublicacion = idPublicacion, IdUsuario = idUsuario });
+            return resultado > 0;
+        }
+    }
+
+    public bool ExistePublicacion(int idPublicacion)
+    {
+        using (var connection = new SqlConnection(connectionString))
+        {
+            string query = "SELECT COUNT(*) FROM Publicaciones WHERE Id = @IdPublicacion";
+            int resultado = connection.QueryFirstOrDefault<int>(query, new { IdPublicacion = idPublicacion });
             return resultado > 0;
         }
     }

@@ -5,13 +5,26 @@ using tp.Models;
 
 namespace tp.Controllers;
 
+public sealed class ToggleMeGustaRequest
+{
+    public int IdPublicacion { get; set; }
+}
+
+public sealed class CrearComentarioRequest
+{
+    public int IdPublicacion { get; set; }
+    public string? Texto { get; set; }
+}
+
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment)
     {
         _logger = logger;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public IActionResult Index()
@@ -81,6 +94,73 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult CrearPublicacion()
+    {
+        if (HttpContext.Session.GetString("ID") == null)
+        {
+            return RedirectToAction("IniciarSesion");
+        }
+
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult CrearPublicacion(string titulo, string descripcion, IFormFile imagen)
+    {
+        string? idUsuarioSession = HttpContext.Session.GetString("ID");
+        if (string.IsNullOrEmpty(idUsuarioSession))
+        {
+            return RedirectToAction("IniciarSesion");
+        }
+
+        if (string.IsNullOrWhiteSpace(titulo) || string.IsNullOrWhiteSpace(descripcion) || imagen == null || imagen.Length == 0)
+        {
+            ViewBag.Mensaje = "Completá todos los campos y seleccioná una imagen.";
+            return View();
+        }
+
+        string[] extensionesPermitidas = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
+        string extension = Path.GetExtension(imagen.FileName).ToLowerInvariant();
+        if (!extensionesPermitidas.Contains(extension) || !imagen.ContentType.StartsWith("image/"))
+        {
+            ViewBag.Mensaje = "La imagen debe ser JPG, PNG, GIF o WEBP.";
+            return View();
+        }
+
+        string carpetaImagenes = Path.Combine(_webHostEnvironment.WebRootPath, "images", "publicaciones");
+        Directory.CreateDirectory(carpetaImagenes);
+
+        string nombreArchivo = $"pub_{Guid.NewGuid():N}{extension}";
+        string rutaDestino = Path.Combine(carpetaImagenes, nombreArchivo);
+
+        using (var stream = new FileStream(rutaDestino, FileMode.Create))
+        {
+            imagen.CopyTo(stream);
+        }
+
+        int idUsuario = int.Parse(idUsuarioSession);
+        Publicacion publicacion = new Publicacion
+        {
+            IdUsuario = idUsuario,
+            Titulo = titulo.Trim(),
+            Descripcion = descripcion.Trim(),
+            Imagen = nombreArchivo,
+            FechaPublicacion = DateTime.Now
+        };
+
+        BD bd = new BD();
+        bd.CrearPublicacion(publicacion);
+
+        return RedirectToAction("paginaPrincipal");
+    }
+
+    [HttpGet]
+    public List<HistoriaUsuario> ObtenerHistorias(int cantidad = 7)
+    {
+        BD bd = new BD();
+        return bd.ObtenerHistorias(cantidad);
+    }
+
     [HttpGet]
     public List<Publicacion> ObtenerPublicaciones(int desde = 0, int cantidad = 10)
     {
@@ -106,40 +186,78 @@ public class HomeController : Controller
         return bd.ObtenerComentarios(idPublicacion);
     }
 
-    [HttpPost]
-    public Comentario? AgregarComentario(int idPublicacion, string texto)
+    [HttpPost("Home/AgregarComentario")]
+    public IActionResult AgregarComentario([FromBody] CrearComentarioRequest request)
     {
         string? idUsuarioSession = HttpContext.Session.GetString("ID");
         if (string.IsNullOrEmpty(idUsuarioSession))
         {
-            return null;
+            return Unauthorized(new { success = false, message = "Sesión no válida." });
         }
 
-        if (string.IsNullOrWhiteSpace(texto))
+        if (request == null || request.IdPublicacion <= 0)
         {
-            return null;
+            return BadRequest(new { success = false, message = "Publicación inválida." });
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Texto))
+        {
+            return BadRequest(new { success = false, message = "El comentario no puede estar vacío." });
         }
 
         int idUsuario = int.Parse(idUsuarioSession);
         BD bd = new BD();
+
+        if (!bd.ExistePublicacion(request.IdPublicacion))
+        {
+            return NotFound(new { success = false, message = "La publicación no existe." });
+        }
         
-        return bd.CrearComentario(idPublicacion, idUsuario, texto);
+        Comentario? comentario = bd.CrearComentario(request.IdPublicacion, idUsuario, request.Texto.Trim());
+        if (comentario == null)
+        {
+            return StatusCode(500, new { success = false, message = "No se pudo guardar el comentario." });
+        }
+
+        return Json(new
+        {
+            success = true,
+            comentario
+        });
     }
 
-    [HttpPost]
-    public int TogglearMeGusta(int idPublicacion)
+    [HttpPost("Home/TogglearMeGusta")]
+    public IActionResult TogglearMeGusta([FromBody] ToggleMeGustaRequest request)
     {
         string? idUsuarioSession = HttpContext.Session.GetString("ID");
         if (string.IsNullOrEmpty(idUsuarioSession))
         {
-            return -1;
+            return Unauthorized(new { success = false, message = "Sesión no válida." });
+        }
+
+        if (request == null || request.IdPublicacion <= 0)
+        {
+            return BadRequest(new { success = false, message = "Publicación inválida." });
         }
 
         int idUsuario = int.Parse(idUsuarioSession);
         BD bd = new BD();
-        
-        bd.TogglearMeGusta(idPublicacion, idUsuario);
-        return bd.ObtenerCantidadMeGusta(idPublicacion);
+
+        if (!bd.ExistePublicacion(request.IdPublicacion))
+        {
+            return NotFound(new { success = false, message = "La publicación no existe." });
+        }
+
+        bool meGusta = bd.TogglearMeGusta(request.IdPublicacion, idUsuario);
+        int cantidadMeGusta = bd.ObtenerCantidadMeGusta(request.IdPublicacion);
+
+        return Json(new
+        {
+            success = true,
+            meGusta,
+            activo = meGusta,
+            cantidadMeGusta
+        });
     }
 
     public IActionResult Privacy()

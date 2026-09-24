@@ -5,23 +5,52 @@
 <link rel="stylesheet" href="~/css/pagina-principal.css" asp-append-version="true" />
 
 <div class="pagina-principal">
-    <div class="header-publicar">
-        <h1>Para ti</h1>
-        <button class="btn-crear-publicacion" onclick="crearPublicacion()">+ Publicar</button>
-    </div>
+    <div class="instagram-shell">
+        <header class="feed-topbar">
+            <div class="brand-area">
+                <span class="brand-mark">◉</span>
+                <div>
+                    <h1>Instagram</h1>
+                    <p>Tu feed, al estilo clásico</p>
+                </div>
+            </div>
 
-    <div class="publicaciones-container" id="publicacionesContainer">
-        <!-- Las publicaciones se cargarán aquí -->
-    </div>
+            <div class="topbar-actions">
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input type="text" placeholder="Buscar" readonly />
+                </div>
+                <button class="btn-crear-publicacion" onclick="crearPublicacion()">+ Crear</button>
+            </div>
+        </header>
 
-    <div class="btn-ver-mas-container" id="verMasContainer" style="display: none;">
-        <button class="btn-ver-mas" id="btnVerMas" onclick="cargarMasPublicaciones()">Ver más</button>
+        <section class="stories-strip" id="historiasContainer">
+            <!-- Las historias se cargarán aquí -->
+        </section>
+
+        <div class="feed-layout">
+            <main class="feed-column">
+                <div class="feed-section-title">
+                    <h2>Feed</h2>
+                    <p>Publicaciones recientes</p>
+                </div>
+
+                <div class="publicaciones-container" id="publicacionesContainer">
+                    <!-- Las publicaciones se cargarán aquí -->
+                </div>
+
+                <div class="btn-ver-mas-container" id="verMasContainer" style="display: none;">
+                    <button class="btn-ver-mas" id="btnVerMas" onclick="cargarMasPublicaciones()">Ver más</button>
+                </div>
+            </main>
+        </div>
     </div>
 </div>
 
 <script src="~/js/publicaciones.js" asp-append-version="true"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        cargarHistorias();
         cargarPublicacionesIniciales();
     });
 </script>

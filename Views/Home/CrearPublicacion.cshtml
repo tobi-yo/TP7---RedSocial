@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "Crear publicación";
+}
+
+<link rel="stylesheet" href="~/css/crear-publicacion.css" asp-append-version="true" />
+
+<section class="create-publicacion-page">
+    <div class="create-publicacion-card">
+        <div class="create-header">
+            <p class="create-eyebrow">Nueva publicación</p>
+            <h1>Crear publicación</h1>
+            <p class="create-subtitle">Subí una imagen, escribí un título y agregá una descripción para compartirla en el feed.</p>
+        </div>
+
+        <form class="create-form" action='@Url.Action("CrearPublicacion", "Home")' method="post" enctype="multipart/form-data" onsubmit="return validarCrearPublicacion();">
+            <div class="create-fields">
+                <div class="create-field-group">
+                    <label for="titulo" class="create-label">Título</label>
+                    <input id="titulo" name="titulo" type="text" class="create-input" maxlength="200" placeholder="Escribí un título" />
+                </div>
+
+                <div class="create-field-group">
+                    <label for="descripcion" class="create-label">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" class="create-textarea" rows="5" placeholder="Contá qué querés compartir"></textarea>
+                </div>
+            </div>
+
+            <div class="create-upload-block">
+                <div class="create-upload-header">
+                    <div>
+                        <h2>Imagen</h2>
+                        <p>Se aceptan imágenes con relación de aspecto entre 3/4 y 4/3.</p>
+                    </div>
+                    <button type="button" class="upload-button" onclick="seleccionarImagen()">Agregar imagen</button>
+                </div>
+
+                <input id="imagen" name="imagen" type="file" accept="image/*" hidden />
+                <p id="imagenMensaje" class="create-inline-message">Elegí un archivo para ver la vista previa.</p>
+
+                <div class="create-preview-frame">
+                    <img id="imagenPreview" alt="Vista previa de la imagen" />
+                    <div id="previewPlaceholder" class="preview-placeholder">
+                        <span>📷</span>
+                        <p>Vista previa de la imagen</p>
+                    </div>
+                </div>
+
+                <div class="create-ratio-note">
+                    <span>Relación permitida:</span>
+                    <strong>3/4 a 4/3</strong>
+                </div>
+            </div>
+
+            <p id="mensaje" class="create-error">@ViewBag.Mensaje</p>
+
+            <div class="create-actions">
+                <button type="submit" class="create-submit">Publicar</button>
+                <button type="button" class="create-cancel" onclick="location.href='@Url.Action("paginaPrincipal", "Home")'">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script src="~/js/crear-publicacion.js" asp-append-version="true"></script>

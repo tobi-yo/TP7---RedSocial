@@ -47,11 +47,10 @@ function validarRegistro() {
     var contrasena = document.getElementById("contrasena") ? document.getElementById("contrasena").value : "";
     var nombre = document.getElementById("nombre") ? document.getElementById("nombre").value : "";
     var apellido = document.getElementById("apellido") ? document.getElementById("apellido").value : "";
-    var tipoUsuario = document.querySelector('input[name="TipoUsuario"]:checked');
     var soloLetrasYNumeros = /^[a-zA-Z0-9]+$/;
     var soloLetrasYEspacios = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
-    if (nombreUsuario === "" || contrasena === "" || nombre === "" || apellido === "" || !tipoUsuario) {
+    if (nombreUsuario === "" || contrasena === "" || nombre === "" || apellido === "") {
         _showMensaje("Por favor, complete todos los campos.");
         return false;
     }

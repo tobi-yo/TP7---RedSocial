@@ -9,5 +9,6 @@ public class Publicacion
     public string? NombreUsuario { get; set; }
     public string? NombreCompleto { get; set; }
     public int CantidadMeGusta { get; set; }
+    public int CantidadComentarios { get; set; }
     public bool MeGustaDelUsuario { get; set; }
 }

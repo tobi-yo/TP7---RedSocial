@@ -3,32 +3,43 @@
 }
 
 <section class="auth-container">
-<h1>Iniciar sesión</h1>
-    <form action='@Url.Action("ValidarCuenta", "Home")' method="post" onsubmit="return validarCuenta();">
+    <div class="auth-header">
+        <p class="auth-eyebrow">Bienvenido de nuevo</p>
+        <h1>Iniciar sesión</h1>
+        <p class="auth-subtitle">Ingresá con tu usuario para continuar en la red social.</p>
+    </div>
+
+    <form class="auth-form" action='@Url.Action("ValidarCuenta", "Home")' method="post" onsubmit="return validarCuenta();">
         <div class="auth-form-group">
-            <label class="auth-label">NombreUsuario</label>
-            <input id="usuario" type="text" name="NombreUsuario" class="auth-input" />
+            <label class="auth-label" for="usuario">Nombre de usuario</label>
+            <input id="usuario" type="text" name="NombreUsuario" class="auth-input" autocomplete="username" />
         </div>
 
         <div class="auth-form-group">
-            <label class="auth-label">Contraseña</label>
-            <input id="contrasena" type="password" name="Contraseña" class="auth-input" />
+            <label class="auth-label" for="contrasena">Contraseña</label>
+            <input id="contrasena" type="password" name="Contraseña" class="auth-input" autocomplete="current-password" />
         </div>
+
         <p id="mensaje" class="auth-message">@ViewBag.Mensaje</p>
 
         <!-- Cloudflare Turnstile widget - site key proporcionada por el usuario -->
-        <div class="auth-form-group">
+        <div class="auth-form-group auth-captcha">
             <div class="cf-turnstile" data-sitekey="0x4AAAAAAET63HM5pdMTLMTA"></div>
         </div>
+
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-        <button type="submit">iniciar sesión</button>
-        
+        <button type="submit" class="auth-submit">Iniciar sesión</button>
     </form>
-    <div class="regist">
-    <h1>¿No tienes cuenta?</h1>
-    <button type="button" onclick="location.href='@Url.Action("Registrarse", "Home")'">Registrarse</button>
+
+    <div class="regist auth-register-card">
+        <div>
+            <h2>¿No tienes cuenta?</h2>
+            <p>Creá una en pocos pasos y empezá a compartir.</p>
+        </div>
+        <button type="button" class="button-secondary" onclick="location.href='@Url.Action("Registrarse", "Home")'">Registrarse</button>
     </div>
-    <button type="button" class="button-secondary" onclick="location.href='@Url.Action("Index", "Home")'">volver</button>
+
+    <button type="button" class="button-secondary auth-back" onclick="location.href='@Url.Action("Index", "Home")'">Volver</button>
 </section>
 
